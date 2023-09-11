@@ -48,22 +48,27 @@ public class GroupService implements InterfaceGroup {
     }
 
     @Override
-    public Group getGroupByName() {
-        Scanner scan = new Scanner (System.in);
-        System.out.println("Введите название группы: ");
-        String name = scan.next();
-        for (Group g: dataBase.getGroups()) {
-           if(g.getGroupName().equals(name)){
-             return g;
-           }
+    public void getGroupByName() {
+        try {
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Введите название группы: ");
+            String name = scan.next();
+            for (Group g : dataBase.getGroups()) {
+                if (g.getGroupName().equals(name)) {
+                    System.out.println(g);
+                    return;
+                }
+            }
+            System.err.println("Группа с именем " + name + " не найдена в базе данных.");
+        } catch (Exception e) {
+            System.err.println("Вы неправильно ввели название группы или произошла ошибка.");
         }
-        return null;
     }
 
     @Override
     public Group updateGroupName() {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Введите название группы: ");
+        System.out.println("Введите нынешнее название группы: ");
         String name = scan.next();
         System.out.println("Введите новое название группы: ");
         String newName = scan.next();
@@ -114,7 +119,7 @@ public class GroupService implements InterfaceGroup {
         }
 
         if (targetGroup == null) {
-            System.out.println("Такой группы не существует! ");
+            System.err.println("Такой группы нет в нашей базе данных! ");
             return;
         }
 
@@ -125,14 +130,14 @@ public class GroupService implements InterfaceGroup {
         System.out.println("Введите Email: ");
         String email = scan.next();
         if (!email.contains("@")) {
-            System.out.println("Неправильно ввели email");
+            System.err.println("Неправильно ввели email");
             return;
         }
 
         System.out.println("Придумайте пароль (не менее 7 символов): ");
         String newPassword = scan.next();
         if (newPassword.length() < 7) {
-            System.out.println("Вы неправильно ввели пароль. Он должен быть не менее 7 символов.");
+            System.err.println("Вы неправильно ввели пароль. Он должен быть не менее 7 символов.");
             return;
         }
 
@@ -145,7 +150,7 @@ public class GroupService implements InterfaceGroup {
         } else if (genderChoice == 2) {
             gender = Gender.MALE;
         } else {
-            System.out.println("Неправильный выбор gender. Пол будет установлен как неопределенный.");
+            System.err.println("Неправильный выбор gender. Пол будет установлен как неопределенный.");
             gender = Gender.UNKNOWN;
         }
 
@@ -176,7 +181,7 @@ public class GroupService implements InterfaceGroup {
         }
 
         if (targetGroup == null) {
-            System.out.println("Такой группы не существует! ");
+            System.err.println("Такой группы не существует! ");
             return;
         }
 
@@ -210,29 +215,39 @@ public class GroupService implements InterfaceGroup {
     }
 
     @Override
-    public Lesson getLessonByName() {
+    public void getLessonByName() {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Введите название урока которого хотите найти: ");
+        System.out.println("Введите название урока, который хотите найти: ");
         String name = scan.next();
-        for (Lesson l: dataBase.getHeadGroup().getLessons()) {
-            if(l.getLessonName().equals(name)){
-                return l;
+
+        boolean lessonFound = false;
+
+        for (Lesson l : dataBase.getHeadGroup().getLessons()) {
+            if (l.getLessonName().equals(name)) {
+                System.out.println(l);
+                lessonFound = true;
+                break;
             }
         }
-        return null;
+
+        if (!lessonFound) {
+            System.err.println("Урок " + name + " не найден!");
+        }
     }
 
+
     @Override
-    public LinkedList<Lesson> getAllLessonByGroupName() {
+    public void getAllLessonByGroupName() {
         Scanner scan = new Scanner(System.in);
         System.out.println("Введите название группы чтобы получить список уроков: ");
         String name = scan.next();
         for (Group g:dataBase.getGroups()) {
             if(g.getGroupName().equals(name)){
-                return g.getLessons();
-            }
+                for (Lesson l: dataBase.getHeadGroup().getLessons()) {
+                    System.out.println(l);
+                }
+            }else System.err.println("Такая группа не найдено!");
         }
-        return null;
     }
 
     @Override
@@ -271,7 +286,7 @@ public class GroupService implements InterfaceGroup {
             dataBase.getHeadGroup().getLessons().remove(lessonToDelete);
             System.out.println("Урок '" + deleteName + "' успешно удалена.");
     } else {
-        System.out.println("Урок с названием '" + deleteName + "' не найдена.");
+        System.err.println("Урок с названием '" + deleteName + "' не найдена.");
     }
     }
 }

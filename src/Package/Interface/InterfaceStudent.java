@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public interface InterfaceStudent {
 
     void updateStudent ();
-    Student findStudentByFirstName ();
+    void findStudentByFirstName ();
     void deleteStudent ();
 
 }

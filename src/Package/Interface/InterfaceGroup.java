@@ -8,15 +8,15 @@ import java.util.LinkedList;
 
 public interface InterfaceGroup {
     void AddNewGroup ();
-    Group getGroupByName ();
+    void getGroupByName ();
     Group updateGroupName();
     LinkedList<Group> getAllGroups();
     LinkedList<Student> getAllStudentsByGroupName();
     void addNewStudent ();
     void addNewLessonToGroup ();
     void getAllStudentsLesson ();
-    Lesson getLessonByName();
-    LinkedList<Lesson> getAllLessonByGroupName();
+    void getLessonByName();
+    void getAllLessonByGroupName();
     void deleteGroupByName();
     void deleteLessonByName();
 
